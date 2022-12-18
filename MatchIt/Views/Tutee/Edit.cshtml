@@ -1,0 +1,189 @@
+﻿@model MatchIt.ViewModels.TuteeCreateViewModel
+
+@{
+	ViewData["Title"] = "Edit";
+	// Since Address isn't a string, it requires a cast.
+	var courses = ViewData["Courses"] as IEnumerable<Course>;
+
+}
+
+<h1>Edit</h1>
+
+<h4>Tutee</h4>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="FirstName" class="control-label"></label>
+				<input asp-for="FirstName" class="form-control" />
+				<span asp-validation-for="FirstName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="LastName" class="control-label"></label>
+				<input asp-for="LastName" class="form-control" />
+				<span asp-validation-for="LastName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="StudentId" class="control-label"></label>
+				<input asp-for="StudentId" class="form-control" />
+				<span asp-validation-for="StudentId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="PhoneNumber" class="control-label"></label>
+				<input asp-for="PhoneNumber" class="form-control" />
+				<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="EmailAddress" class="control-label"></label>
+				<input asp-for="EmailAddress" class="form-control" />
+				<span asp-validation-for="EmailAddress" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Courses</label>
+				<select class="form-control courses-basic-multiple" asp-items="@Model.CoursesSelectList" asp-for="SelectedCourses">
+					<option value="">-- Select Course --</option>
+				</select>
+				@*				<select asp-for="CourseIds" class="courses-basic-multiple form-control" name="courses[]" multiple="multiple">
+					@foreach (var course in courses)
+					{
+						<option value="@course.Id">@course.Code</option>
+					}
+				</select>*@
+				@*<span asp-validation-for="CourseIds" class="text-danger"></span>*@
+			</div>
+
+			<div class="row">
+				<div class="form-group row">
+					<div class="col-md-4">
+						<label for="Availabilities[0].Day">Day</label>
+						<select class="form-control" name="Availabilities[0].Day">
+							<option value="Monday" selected=@(Model.Availabilities[0].Day == "Monday") >Monday</option>
+							<option value="Tuesday" selected=@(Model.Availabilities[0].Day == "Tuesday")>Tuesday</option>
+							<option value="Wednesday" selected=@(Model.Availabilities[0].Day == "Wednesday")>Wednesday</option>
+							<option value="Thursday" selected=@(Model.Availabilities[0].Day == "Thursday")>Thursday</option>
+							<option value="Friday" selected=@(Model.Availabilities[0].Day == "Friday")>Friday</option>
+							<option value="Saturday" selected=@(Model.Availabilities[0].Day == "Saturday")>Saturday</option>
+							<option value="Sunday" selected=@(Model.Availabilities[0].Day == "Sunday")>Sunday</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<label for="Availabilities[0].From">From</label>
+						<input type="time" class="form-control" name="Availabilities[0].From" value="@(Model.Availabilities[0].From)"/>
+					</div>
+					<div class="col-md-3">
+						<label for="Availabilities[0].To">To</label>
+						<input type="time" class="form-control" name="Availabilities[0].To" value="@(Model.Availabilities[0].To)"/>
+					</div>
+				</div>
+
+			</div>
+			<div id="new-input" class="row">
+				@*@Html.EditorFor(t => t.Availabilities)*@
+				@for (int i = 1; i < Model.Availabilities.Count; i++)
+				{
+					<div class="form-group row">
+						<div class="col-md-4">
+							<label for="Availabilities[@i].Day">Day</label>
+								<select class="form-control" name="Availabilities[@i].Day">
+								<option value="Monday" selected=@(Model.Availabilities[i].Day == "Monday") >Monday</option>
+								<option value="Tuesday" selected=@(Model.Availabilities[i].Day == "Tuesday")>Tuesday</option>
+								<option value="Wednesday" selected=@(Model.Availabilities[i].Day == "Wednesday")>Wednesday</option>
+								<option value="Thursday" selected=@(Model.Availabilities[i].Day == "Thursday")>Thursday</option>
+								<option value="Friday" selected=@(Model.Availabilities[i].Day == "Friday")>Friday</option>
+								<option value="Saturday" selected=@(Model.Availabilities[i].Day == "Saturday")>Saturday</option>
+								<option value="Sunday" selected=@(Model.Availabilities[i].Day == "Sunday")>Sunday</option>
+								</select>
+						</div>
+						<div class="col-md-3">
+							<label for="Availabilities[@i].From">From</label>
+							<input type="time" class="form-control" name="Availabilities[@i].From" value="@(Model.Availabilities[@i].From)"/>
+						</div>
+						<div class="col-md-3">
+							<label for="Availabilities[@i].To">To</label>
+								<input type="time" class="form-control" name="Availabilities[@i].To" value="@(Model.Availabilities[@i].To)"/>
+						</div>
+					</div>
+				}
+
+			</div>
+
+			<div class="row mt-3 ps-2">
+				<button id="add-time" class="btn btn-success col-md-1 availability-btn">Add Time</button>
+				<button id="remove-time" class="btn btn-danger col-md-1 mx-3 availability-btn">Remove Time</button>
+			</div>
+
+
+			<div class="form-group mt-4">
+				<input type="submit" value="Edit" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="List">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+					<script>
+						let count = @(Model.Availabilities.Count);
+						$(document).ready(function() {
+							$('.courses-basic-multiple').select2();
+						});
+
+						$("#remove-time").click(function (e) {
+							e.preventDefault()
+							count = 1;
+							$('#new-input').empty();
+						})
+
+						$("#add-time").click(function (e) {
+							e.preventDefault()
+						newRowAdd =
+							`	<div class="form-group row">
+									<div class="col-md-4">
+											<label for="Availabilities[${count}].Day">Day</label>
+												<select class="form-control" name="Availabilities[${count}].Day">
+											<option value="Monday">Monday</option>
+											<option value="Tuesday">Tuesday</option>
+											<option value="Wednesday">Wednesday</option>
+											<option value="Thursday">Thursday</option>
+											<option value="Friday">Friday</option>
+											<option value="Saturday">Saturday</option>
+											<option value="Sunday">Sunday</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+											<label for="Availabilities[${count}].From">From</label>
+												<input type="time" class="form-control" name="Availabilities[${count}].From" />
+									</div>
+									<div class="col-md-3">
+											<label for="Availabilities[${count}].To">To</label>
+												<input type="time" class="form-control" name="Availabilities[${count}].To"/>
+									</div>
+
+								</div>
+							`;
+
+										// Delete row is a bit tricky I am removing it for now.
+
+										//						<div class="col-md-2 d-flex align-items-end pb-2" >
+										//	<i class="bi bi-trash" id="DeleteRow"></i>
+										//</div>
+
+						$('#new-input').append(newRowAdd);
+						count++;
+					});
+
+					$("body").on("click", "#DeleteRow", function () {
+						count--;
+						$(this).parent().parent().remove();
+					})
+
+					</script>
+}

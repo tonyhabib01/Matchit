@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MatchIt.Models.MatchingStudents>
+
+@{
+    ViewData["Title"] = "Matched List";
+}
+
+<h1>List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tutor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tutee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Tutor
+                </td>
+                <td>
+                    @item.Tutee
+                </td>
+                <td>
+                    @item.Course
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

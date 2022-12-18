@@ -1,0 +1,108 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MatchIt
+build_property.RootNamespace = MatchIt
+build_property.ProjectDir = C:\Users\tonyh\Desktop\C#\MatchIt\MatchIt\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\tonyh\Desktop\C#\MatchIt\MatchIt
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Course/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Course/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Course/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Course/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Semester/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VtZXN0ZXJcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Semester/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VtZXN0ZXJcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Semester/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VtZXN0ZXJcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Semester/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VtZXN0ZXJcTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Semester/MatchedList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VtZXN0ZXJcTWF0Y2hlZExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutee/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0ZWVcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutee/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0ZWVcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutee/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0ZWVcTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutee/_Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0ZWVcX0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutor/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Tutor/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/tonyh/Desktop/C\#/MatchIt/MatchIt/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-q4dsx5vjbh
