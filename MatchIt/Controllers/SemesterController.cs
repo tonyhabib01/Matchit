@@ -138,6 +138,10 @@ namespace MatchIt.Controllers
 
         public ActionResult MatchStudents(int id)
         {
+            var matchedStudents = _context.MatchingStudents.Include(m => m.Tutor).Include(m => m.Tutor.Semester).Where(m => m.Tutor.Semester.Id == id);
+            _context.RemoveRange(matchedStudents);
+            _context.SaveChanges();
+
             var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
                 return RedirectToAction(nameof(List));
@@ -148,7 +152,7 @@ namespace MatchIt.Controllers
                 con.Open();
                 var tutorsQuery = @$"
                     SELECT 
-                        s.*,
+                        s.*
                     FROM 
                         Students AS s
                     INNER JOIN 
@@ -188,7 +192,11 @@ namespace MatchIt.Controllers
                             while (sdr.Read())
                             {
                                 // The following code is injection safe.
-                                availabilitiesArrayQuery.Add($"((a.[From] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') OR (a.[To] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') AND (a.[Day] = '{sdr["To"]}'))");
+                                //availabilitiesArrayQuery.Add($"((a.[From] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') OR (a.[To] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') AND (a.[Day] = '{sdr["To"]}'))");
+                                availabilitiesArrayQuery.Add($"((a.[From] <= '{sdr["From"]}' AND a.[To] > '{sdr["From"]}') AND (a.[Day] = '{sdr["Day"]}'))");
+                                availabilitiesArrayQuery.Add($"((a.[From] < '{sdr["To"]}' AND a.[To] >= '{sdr["To"]}') AND (a.[Day] = '{sdr["Day"]}'))");
+                                availabilitiesArrayQuery.Add($"((a.[From] >= '{sdr["From"]}' AND a.[To] <= '{sdr["To"]}') AND (a.[Day] = '{sdr["Day"]}'))");
+
                             }
                         }
                     }
@@ -226,7 +234,7 @@ namespace MatchIt.Controllers
                             (SELECT COUNT (*) FROM MatchingStudents WHERE TuteeId = s.Id GROUP BY TuteeId)
                            END
                           ) < 2
-                        GROUP BY s.Id, cs.CoursesId
+                        GROUP BY s.id, cs.CoursesId
                         ORDER BY 
                          (COUNT (*) OVER ( PARTITION BY s.Id))
                     ";
@@ -250,7 +258,7 @@ namespace MatchIt.Controllers
                         objTrans = con.BeginTransaction();
                         try
                         {
-                            var q = "INSERT INTO MatchingStudents VALUES (TutorId, TuteeId, CourseId) ";
+                            var q = "INSERT INTO MatchingStudents (TutorId, TuteeId, CourseId) VALUES";
                             for (int i = 0; i < matchedTutees.Count; i++)
                             {
                                 q += $"({tutorId}, {matchedTutees[i].StudentId}, {matchedTutees[i].CourseId})";

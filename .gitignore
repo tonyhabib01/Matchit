@@ -3,3 +3,4 @@
 MatchIt/obj
 MatchIt/obj/*
 MatchIt/appsettings.Development.json
+MatchIt/bin
