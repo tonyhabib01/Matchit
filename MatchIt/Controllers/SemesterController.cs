@@ -188,7 +188,7 @@ namespace MatchIt.Controllers
                             while (sdr.Read())
                             {
                                 // The following code is injection safe.
-                                availabilitiesArrayQuery.Add($"((a.[From] BETWEEN '{(string)sdr["From"]}' AND '{(string)sdr["To"]}') OR (a.[To] BETWEEN '{(string)sdr["From"]}' AND '{(string)sdr["To"]}') AND (a.[Day] = '{(string)sdr["To"]}'))");
+                                availabilitiesArrayQuery.Add($"((a.[From] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') OR (a.[To] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') AND (a.[Day] = '{sdr["To"]}'))");
                             }
                         }
                     }
@@ -226,6 +226,7 @@ namespace MatchIt.Controllers
                             (SELECT COUNT (*) FROM MatchingStudents WHERE TuteeId = s.Id GROUP BY TuteeId)
                            END
                           ) < 2
+                        GROUP BY s.Id, cs.CoursesId
                         ORDER BY 
                          (COUNT (*) OVER ( PARTITION BY s.Id))
                     ";
@@ -256,7 +257,7 @@ namespace MatchIt.Controllers
                                 if (i != matchedTutees.Count - 1)
                                     q += ", ";
                             }
-                            var sqlCommand = new SqlCommand(q);
+                            var sqlCommand = new SqlCommand(q, con, objTrans);
                             sqlCommand.ExecuteNonQuery();
                             objTrans.Commit();
 
@@ -265,10 +266,10 @@ namespace MatchIt.Controllers
                         {
                             objTrans.Rollback();
                         }
-                        finally
-                        {
-                            con.Close();
-                        }
+                        //finally
+                        //{
+                        //    con.Close();
+                        //}
                     }
 
 

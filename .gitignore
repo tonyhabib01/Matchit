@@ -1,0 +1,5 @@
+.vs
+.vs/*
+MatchIt/obj
+MatchIt/obj/*
+MatchIt/appsettings.Development.json
