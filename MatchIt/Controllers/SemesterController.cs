@@ -26,7 +26,16 @@ namespace MatchIt.Controllers
         public ActionResult List()
         {
 			ViewBag.Page = "Semesters";
-			return View(_context.Semesters);
+            try
+            {
+                var semesters = _context.Semesters.OrderByDescending(s => s.Id);
+                return View(semesters);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Couldn't fetch semesters data.";
+                return View(new List<Semester>());
+            }
         }
 
         // GET: SemesterController/Create
@@ -45,11 +54,13 @@ namespace MatchIt.Controllers
             {
                 _context.Add(semester);
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Semester created successfully.";
                 return RedirectToAction(nameof(List));
 
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to create a new semester.";
                 return RedirectToAction(nameof(List));
 
             }
@@ -61,7 +72,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Semesters";
 			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
+            {
+                TempData["ErrorMessage"] = "Invalid semester Id.";
                 return RedirectToAction(nameof(List));
+            }
 
             return View(semester);
         }
@@ -73,8 +87,9 @@ namespace MatchIt.Controllers
         {
             if (id != semester.Id)
             {
+                TempData["ErrorMessage"] = "Invalid semester Id.";
                 return RedirectToAction(nameof(List));
-                //return NotFound();
+                
             }
 
             try
@@ -83,11 +98,19 @@ namespace MatchIt.Controllers
                 {
                     _context.Update(semester);
                     _context.SaveChanges();
+                    TempData["SuccessMessage"] = "Semester edited successfully.";
+                    return RedirectToAction(nameof(List));
                 }
-                return RedirectToAction(nameof(List));
+                else
+                {
+                    TempData["ErrorMessage"] = ModelState.Values.ToList()[0].Errors[0].ToString();
+                    return RedirectToAction(nameof(Edit), new { id });
+
+                }
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to edit semester.";
                 return RedirectToAction(nameof(List));
             }
         }
@@ -98,7 +121,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Semesters";
 			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
+            {
+                TempData["ErrorMessage"] = "Invalid semester Id.";
                 return RedirectToAction(nameof(List));
+            }
 
             return View(semester);
         }
@@ -110,6 +136,7 @@ namespace MatchIt.Controllers
         {
             if (id != semester.Id)
             {
+                TempData["ErrorMessage"] = "Invalid semester Id.";
                 return RedirectToAction(nameof(List));
             }
 
@@ -118,11 +145,12 @@ namespace MatchIt.Controllers
 
                 _context.Remove(semester);
                 _context.SaveChanges();
-
+                TempData["SuccessMessage"] = "Semester deleted successfully.";
                 return RedirectToAction(nameof(List));
             }
             catch
             {
+                TempData["SuccessMessage"] = "Unable to delete semester.";
                 return RedirectToAction(nameof(List));
             }
         }
@@ -132,7 +160,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Semesters";
 			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
+            {
+                TempData["ErrorMessage"] = "Invalid semester Id.";
                 return RedirectToAction(nameof(List));
+            }
             var matchedList = _context.MatchingStudents
                 .Include(m => m.Tutor)
                 .Include(m => m.Tutee)
@@ -150,7 +181,10 @@ namespace MatchIt.Controllers
 
             var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
+            {
+                TempData["ErrorMessage"] = "Invalid semester Id.";
                 return RedirectToAction(nameof(List));
+            }
             var tutorsIds = new List<int>();
             SqlTransaction objTrans = null;
             using (SqlConnection con = new SqlConnection(_context.Database.GetConnectionString()))
@@ -278,6 +312,7 @@ namespace MatchIt.Controllers
                         }
                         catch (Exception)
                         {
+                            TempData["ErrorMessage"] = "Unable to match students please check if the tutees and tutors data are correct.";
                             objTrans.Rollback();
                         }
                         //finally
@@ -293,7 +328,7 @@ namespace MatchIt.Controllers
                 if (con.State == ConnectionState.Open)
                     con.Close();
 
-                return View();
+                return RedirectToAction(nameof(MatchedList), new { id });
               
             }
         }
