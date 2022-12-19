@@ -9,28 +9,28 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.StudentId)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.EmailAddress)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Courses)
             </th>
-            <th>Actions</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
