@@ -22,20 +22,23 @@ namespace MatchIt.Controllers
         // GET: TutorController
         public ActionResult List()
         {
-            var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
+			ViewBag.Page = "Tutors";
+			var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
             return View(_context.Tutors.Include(t => t.Courses).Where(t => t.Semester == semester));
         }
 
         // GET: TutorController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+			ViewBag.Page = "Tutors";
+			return View();
         }
 
         // GET: TutorController/Create
         public ActionResult Create()
         {
-            ViewData["Courses"] = _context.Courses;
+			ViewBag.Page = "Tutors";
+			ViewData["Courses"] = _context.Courses;
             var vModel = new TutorCreateViewModel();
             vModel.CoursesSelectList = new List<SelectListItem>();
             foreach (var course in _context.Courses)
@@ -94,7 +97,8 @@ namespace MatchIt.Controllers
         // GET: TutorController/Edit/5
         public ActionResult Edit(int id)
         {
-            var tutor = _context.Tutors.Include(t => t.Availabilities).Include(t => t.Courses).SingleOrDefault(t => t.Id == id); // Eager Loading
+			ViewBag.Page = "Tutors";
+			var tutor = _context.Tutors.Include(t => t.Availabilities).Include(t => t.Courses).SingleOrDefault(t => t.Id == id); // Eager Loading
             if (tutor == null)
                 return RedirectToAction(nameof(List));
 
@@ -172,7 +176,8 @@ namespace MatchIt.Controllers
         // GET: TutorController/Delete/5
         public ActionResult Delete(int id)
         {
-            var tutor = _context.Tutors.SingleOrDefault(t => t.Id == id);
+			ViewBag.Page = "Tutors";
+			var tutor = _context.Tutors.SingleOrDefault(t => t.Id == id);
             if (tutor == null)
                 return RedirectToAction(nameof(List));
 

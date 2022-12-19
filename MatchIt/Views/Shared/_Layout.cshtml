@@ -11,44 +11,53 @@
 	<link rel="stylesheet" href="~/MatchIt.styles.css" asp-append-version="true" />
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-			<div class="container-fluid">
-				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MatchIt</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Semester" asp-action="List">Semesters</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="List">Courses</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Tutee" asp-action="List">Tutees</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Tutor" asp-action="List">Tutors</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
-	<div class="container">
-		<main role="main" class="pb-3">
-			@RenderBody()
-		</main>
-	</div>
+	<main class="main">
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                <span class="fs-4">Match It</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a asp-area="" asp-controller="Semester" asp-action="List" class="nav-link text-white @((ViewBag?.Page == "Semesters") ? "active" : "")" aria-current="page">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                        Semesters
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Course" asp-action="List" class="nav-link text-white @((ViewBag?.Page == "Courses") ? "active" : "")">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                        Courses
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Tutee" asp-action="List" class="nav-link text-white @((ViewBag?.Page == "Tutees") ? "active" : "")">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                        Tutees
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Tutor" asp-action="List" class="nav-link text-white @((ViewBag?.Page == "Tutors") ? "active" : "")">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                        Tutors
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                &copy; @DateTime.Now.Year.ToString() - Match It
+            </div>
+        </div>
+        <div class="content-container">
+        <div class="container w-90">
+            <main role="main" class="pb-3 mt-5">
+                @RenderBody()
+            </main>
+        </div>
+        </div>
+    </main>
 
-	<footer class="border-top footer text-muted">
-		<div class="container">
-			&copy; @DateTime.Now.Year.ToString() - MatchIt
-		</div>
-	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>

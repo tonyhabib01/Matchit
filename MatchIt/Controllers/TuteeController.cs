@@ -20,26 +20,29 @@ namespace MatchIt.Controllers
         {
             _logger = logger;
             _context = context;
-        }
+		}
 
 
         // GET: TuteeController
         public ActionResult List()
         {
-            var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
+			ViewBag.Page = "Tutees";
+			var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
             return View(_context.Tutees.Include(t => t.Courses).Where(t => t.Semester == semester));
         }
 
         // GET: TuteeController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+			ViewBag.Page = "Tutees";
+			return View();
         }
 
         // GET: TuteeController/Create
         public ActionResult Create()
         {
-            ViewData["Courses"] = _context.Courses;
+			ViewBag.Page = "Tutees";
+			ViewData["Courses"] = _context.Courses;
             var vModel = new TuteeCreateViewModel();
             vModel.CoursesSelectList = new List<SelectListItem>();
 
@@ -103,7 +106,8 @@ namespace MatchIt.Controllers
         // GET: TuteeController/Edit/5
         public ActionResult Edit(int id)
         {
-            var tutee = _context.Tutees.Include(t => t.Availabilities).Include(t => t.Courses).SingleOrDefault(t => t.Id == id); // Eager Loading
+			ViewBag.Page = "Tutees";
+			var tutee = _context.Tutees.Include(t => t.Availabilities).Include(t => t.Courses).SingleOrDefault(t => t.Id == id); // Eager Loading
             if (tutee == null)
                 return RedirectToAction(nameof(List));
 
@@ -203,7 +207,8 @@ namespace MatchIt.Controllers
         // GET: TuteeController/Delete/5
         public ActionResult Delete(int id)
         {
-            var tutee = _context.Tutees.SingleOrDefault(t => t.Id == id);
+			ViewBag.Page = "Tutees";
+			var tutee = _context.Tutees.SingleOrDefault(t => t.Id == id);
             if (tutee == null)
                 return RedirectToAction(nameof(List));
 

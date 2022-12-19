@@ -17,13 +17,15 @@ namespace MatchIt.Controllers
         // GET: CourseController
         public ActionResult List()
         {
-            return View(_context.Courses);
+			ViewBag.Page = "Courses";
+			return View(_context.Courses);
         }
 
         // GET: CourseController/Create
         public ActionResult Create()
         {
-            return View();
+			ViewBag.Page = "Courses";
+			return View();
         }
 
         // POST: CourseController/Create
@@ -49,7 +51,8 @@ namespace MatchIt.Controllers
         // GET: CourseController/Edit/5
         public ActionResult Edit(int id)
         {
-            var course = _context.Courses.SingleOrDefault(c => c.Id == id);
+			ViewBag.Page = "Courses";
+			var course = _context.Courses.SingleOrDefault(c => c.Id == id);
             if (course == null)
                 return RedirectToAction(nameof(List));
 
@@ -85,7 +88,8 @@ namespace MatchIt.Controllers
         // GET: CourseController/Delete/5
         public ActionResult Delete(int id)
         {
-            var course = _context.Courses.SingleOrDefault(c => c.Id == id);
+			ViewBag.Page = "Courses";
+			var course = _context.Courses.SingleOrDefault(c => c.Id == id);
             if (course == null)
                 return RedirectToAction(nameof(List));
 

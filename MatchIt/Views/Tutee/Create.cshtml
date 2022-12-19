@@ -34,12 +34,12 @@
 		<input asp-for="PhoneNumber" class="form-control" />
 		<span asp-validation-for="PhoneNumber" class="text-danger"></span>
   </div>
-  <div class="col-12">
+  <div class="col-md-12">
 		<label asp-for="EmailAddress" class="form-label"></label>
 		<input asp-for="EmailAddress" class="form-control" />
 		<span asp-validation-for="EmailAddress" class="text-danger"></span>
   </div>
-  <div class="col-12">
+  <div class="col-md-12">
 		<label class="form-label">Courses</label>
 		<select class="form-control courses-basic-multiple" asp-items="@Model.CoursesSelectList" asp-for="SelectedCourses">
 			<option value="">-- Select Course --</option>
@@ -75,7 +75,7 @@
 		<button id="remove-time" class="btn btn-danger col-md-1 mx-3 availability-btn">Remove Time</button>
 	</div>
 
-  <div class="col-12">
+  <div class="col-md-12">
     <button type="submit" class="btn btn-primary">Create</button>
   </div>
 

@@ -25,13 +25,15 @@ namespace MatchIt.Controllers
         // GET: SemesterController
         public ActionResult List()
         {
-            return View(_context.Semesters);
+			ViewBag.Page = "Semesters";
+			return View(_context.Semesters);
         }
 
         // GET: SemesterController/Create
         public ActionResult Create()
         {
-            return View();
+			ViewBag.Page = "Semesters";
+			return View();
         }
 
         // POST: SemesterController/Create
@@ -56,7 +58,8 @@ namespace MatchIt.Controllers
         // GET: SemesterController/Edit/5
         public ActionResult Edit(int id)
         {
-            var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
+			ViewBag.Page = "Semesters";
+			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
                 return RedirectToAction(nameof(List));
 
@@ -92,7 +95,8 @@ namespace MatchIt.Controllers
         // GET: SemesterController/Delete/5
         public ActionResult Delete(int id)
         {
-            var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
+			ViewBag.Page = "Semesters";
+			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
                 return RedirectToAction(nameof(List));
 
@@ -125,7 +129,8 @@ namespace MatchIt.Controllers
 
         public ActionResult MatchedList(int id)
         {
-            var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
+			ViewBag.Page = "Semesters";
+			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
                 return RedirectToAction(nameof(List));
             var matchedList = _context.MatchingStudents
@@ -138,7 +143,8 @@ namespace MatchIt.Controllers
 
         public ActionResult MatchStudents(int id)
         {
-            var matchedStudents = _context.MatchingStudents.Include(m => m.Tutor).Include(m => m.Tutor.Semester).Where(m => m.Tutor.Semester.Id == id);
+			ViewBag.Page = "Semesters";
+			var matchedStudents = _context.MatchingStudents.Include(m => m.Tutor).Include(m => m.Tutor.Semester).Where(m => m.Tutor.Semester.Id == id);
             _context.RemoveRange(matchedStudents);
             _context.SaveChanges();
 
