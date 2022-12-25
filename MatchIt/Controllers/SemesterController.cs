@@ -172,7 +172,9 @@ namespace MatchIt.Controllers
             }
             var matchedList = _context.MatchingStudents
                 .Include(m => m.Tutor)
+                .Include(m => m.Tutor.Availabilities)
                 .Include(m => m.Tutee)
+                .Include(m => m.Tutee.Availabilities)
                 .Include(m => m.Course)
                 .Where(m => m.Tutor.Semester.Id == semester.Id);
 

@@ -30,7 +30,7 @@ namespace MatchIt.Controllers
             try
             {
 			    var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
-                return View(_context.Tutees.Include(t => t.Courses).Where(t => t.Semester == semester));
+                return View(_context.Tutees.Include(t => t.Courses).Include(t => t.Availabilities).Where(t => t.Semester == semester));
             }
             catch (Exception ex)
             {

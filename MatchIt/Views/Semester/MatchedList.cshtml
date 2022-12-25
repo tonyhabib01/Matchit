@@ -28,7 +28,13 @@
                 @Html.DisplayNameFor(model => model.Tutor)
             </th>
             <th scope="col">
+                @Html.DisplayNameFor(model => model.Tutor.Availabilities)
+            </th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Tutee)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Tutee.Availabilities)
             </th>
             <th scope="col">
                 @Html.DisplayNameFor(model => model.Course)
@@ -43,7 +49,23 @@
                     @item.Tutor
                 </td>
                 <td>
+                    <ul>
+                        @foreach (var av in item.Tutor.Availabilities)
+                        {
+                            <li>@(av.DayTrimmed[av.Day]): @av.From.ToShortTimeString() - @av.To.ToShortTimeString()</li>
+                        }
+                    </ul>
+                </td>
+                <td>
                     @item.Tutee
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var av in item.Tutee.Availabilities)
+                        {
+                            <li>@(av.DayTrimmed[av.Day]): @av.From.ToShortTimeString() - @av.To.ToShortTimeString()</li>
+                        }
+                    </ul>
                 </td>
                 <td>
                     @item.Course

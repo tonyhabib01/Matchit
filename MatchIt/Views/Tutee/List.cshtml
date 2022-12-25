@@ -44,6 +44,9 @@
             <th scope="col">
                 @Html.DisplayNameFor(model => model.Courses)
             </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Availabilities)
+            </th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -69,9 +72,17 @@
                 @String.Join(", ", item.Courses)         
             </td>
             <td>
+                <ul>
+                        @foreach(var av in item.Availabilities)
+                        {
+                            <li>@(av.DayTrimmed[av.Day]): @av.From.ToShortTimeString() - @av.To.ToShortTimeString()</li>
+                        }
+                </ul>
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+@*                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+*@                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
