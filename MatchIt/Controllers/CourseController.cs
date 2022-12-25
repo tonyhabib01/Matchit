@@ -18,7 +18,15 @@ namespace MatchIt.Controllers
         public ActionResult List()
         {
 			ViewBag.Page = "Courses";
-			return View(_context.Courses);
+            try
+            {
+                return View(_context.Courses);
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Couldn't fetch courses data.";
+                return View(new List<Semester>());
+            }
         }
 
         // GET: CourseController/Create
@@ -38,13 +46,13 @@ namespace MatchIt.Controllers
                 course.Code = course.Code.Replace(" ", String.Empty);
                 _context.Add(course);
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Course created successfully.";
                 return RedirectToAction(nameof(List));
-
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to create a new course.";
                 return RedirectToAction(nameof(List));
-
             }
         }
 
@@ -54,7 +62,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Courses";
 			var course = _context.Courses.SingleOrDefault(c => c.Id == id);
             if (course == null)
+            {
+                TempData["ErrorMessage"] = "Invalid course id.";
                 return RedirectToAction(nameof(List));
+            }
 
             return View(course);
         }
@@ -66,8 +77,8 @@ namespace MatchIt.Controllers
         {
             if (id != course.Id)
             {
+                TempData["ErrorMessage"] = "Invalid course Id.";
                 return RedirectToAction(nameof(List));
-                //return NotFound();
             }
 
             try
@@ -77,10 +88,12 @@ namespace MatchIt.Controllers
                     _context.Update(course);
                     _context.SaveChanges();
                 }
+                TempData["SuccessMessage"] = "Course edited successfully.";
                 return RedirectToAction(nameof(List));
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to edit course.";
                 return RedirectToAction(nameof(List));
             }
         }
@@ -91,7 +104,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Courses";
 			var course = _context.Courses.SingleOrDefault(c => c.Id == id);
             if (course == null)
+            {
+                TempData["ErrorMessage"] = "Invalid course Id.";
                 return RedirectToAction(nameof(List));
+            }
 
             return View(course);
         }
@@ -103,6 +119,7 @@ namespace MatchIt.Controllers
         {
             if (id != course.Id)
             {
+                TempData["ErrorMessage"] = "Invalid course Id.";
                 return RedirectToAction(nameof(List));
             }
 
@@ -111,11 +128,12 @@ namespace MatchIt.Controllers
 
                 _context.Remove(course);
                 _context.SaveChanges();
-
+                TempData["SuccessMessage"] = "Course deleted successfully.";
                 return RedirectToAction(nameof(List));
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to delete course.";
                 return RedirectToAction(nameof(List));
             }
         }

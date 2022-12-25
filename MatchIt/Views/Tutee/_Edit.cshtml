@@ -4,6 +4,14 @@
     ViewData["Title"] = "Edit";
 }
 
+@if (!String.IsNullOrEmpty(TempData?["ErrorMessage"]?.ToString()))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <h1>Edit</h1>
 
 <h4>Tutee</h4>

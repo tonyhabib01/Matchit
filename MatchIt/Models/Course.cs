@@ -6,6 +6,7 @@
         public string Code { get; set; }
         public string Name { get; set; }
         public List<Student>? Students { get; set; }
+        public List<MatchingStudents>? MatchingStudents { get; set; }
 
         public override string ToString()
         {

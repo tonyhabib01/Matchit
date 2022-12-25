@@ -1,4 +1,5 @@
 ﻿using MatchIt.Models;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Reflection.Metadata;
@@ -25,15 +26,11 @@ namespace MatchIt.Data
                 .HasValue<Tutor>("tutor")
                 .HasValue<Tutee>("tutee");
 
-            //modelBuilder.Entity<Tutor>()
-            //    .HasMany(t => t.MatchingTutees)
-            //    .WithOne(m => m.Tutor)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //modelBuilder.Entity<Tutee>()
-            //    .HasMany(t => t.MatchingTutors)
-            //    .WithOne(m => m.Tutee)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Course>()
+                .HasMany(t => t.MatchingStudents)
+                .WithOne(m => m.Course)
+                .HasForeignKey("CourseId")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

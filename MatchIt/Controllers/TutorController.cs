@@ -23,8 +23,16 @@ namespace MatchIt.Controllers
         public ActionResult List()
         {
 			ViewBag.Page = "Tutors";
-			var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
-            return View(_context.Tutors.Include(t => t.Courses).Where(t => t.Semester == semester));
+            try
+            {
+			    var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
+                return View(_context.Tutors.Include(t => t.Courses).Where(t => t.Semester == semester));
+            } 
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Couldn't fetch tutors data.";
+                return View(new List<Tutor>());
+            }
         }
 
         // GET: TutorController/Details/5
@@ -84,13 +92,14 @@ namespace MatchIt.Controllers
                 };
                 _context.Add(tutor);
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Tutor created successfully.";
                 return RedirectToAction(nameof(List));
 
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to create a new tutor.";
                 return RedirectToAction(nameof(List));
-
             }
         }
 
@@ -100,7 +109,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Tutors";
 			var tutor = _context.Tutors.Include(t => t.Availabilities).Include(t => t.Courses).SingleOrDefault(t => t.Id == id); // Eager Loading
             if (tutor == null)
+            {
+                TempData["ErrorMessage"] = "Invalid tutee id.";
                 return RedirectToAction(nameof(List));
+            }
 
 
             var vModel = new TutorCreateViewModel
@@ -167,8 +179,16 @@ namespace MatchIt.Controllers
             tutor.Availabilities.Clear();
             tutor.Availabilities = availabilities;
 
-            _context.Update(tutor);
-            _context.SaveChanges();
+            try
+            {
+                _context.Update(tutor);
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Tutee edited successfully.";
+            }
+            catch (Exception ex) 
+            {
+                TempData["ErrorMessage"] = "Unable to edit tutee.";
+            }
 
             return RedirectToAction(nameof(List));
         }
@@ -179,7 +199,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Tutors";
 			var tutor = _context.Tutors.SingleOrDefault(t => t.Id == id);
             if (tutor == null)
+            {
+                TempData["ErrorMessage"] = "Invalid tutor Id.";
                 return RedirectToAction(nameof(List));
+            }
 
             return View(tutor);
         }
@@ -191,19 +214,27 @@ namespace MatchIt.Controllers
         {
             if (id != tutor.Id)
             {
+                TempData["ErrorMessage"] = "Invalid tutor Id.";
                 return RedirectToAction(nameof(List));
             }
 
             try
             {
-
-                _context.Remove(tutor);
+                var tut = _context.Tutors.Include(t => t.Semester).Single(t => t.Id == id);
+                var matchedList = _context.MatchingStudents
+                    .Include(m => m.Tutor)
+                    .Include(m => m.Tutee)
+                    .Include(m => m.Course)
+                    .Where(m => m.Tutor.Semester.Id == tut.Semester.Id);
+                _context.RemoveRange(matchedList);
+                _context.Remove(tut);
                 _context.SaveChanges();
-
+                TempData["SuccessMessage"] = "Tutor deleted successfully.";
                 return RedirectToAction(nameof(List));
             }
             catch
             {
+                TempData["ErrorMessage"] = "Unable to delete tutor.";
                 return RedirectToAction(nameof(List));
             }
         }

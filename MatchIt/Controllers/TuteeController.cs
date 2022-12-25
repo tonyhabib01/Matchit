@@ -27,8 +27,16 @@ namespace MatchIt.Controllers
         public ActionResult List()
         {
 			ViewBag.Page = "Tutees";
-			var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
-            return View(_context.Tutees.Include(t => t.Courses).Where(t => t.Semester == semester));
+            try
+            {
+			    var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
+                return View(_context.Tutees.Include(t => t.Courses).Where(t => t.Semester == semester));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Couldn't fetch tutees data.";
+                return View(new List<Tutee>());
+            }
         }
 
         // GET: TuteeController/Details/5
@@ -75,7 +83,6 @@ namespace MatchIt.Controllers
                 }
                 var semester = _context.Semesters.OrderByDescending(s => s.Id).First();
                 var courses = _context.Courses.Where(c => tuteeViewModel.SelectedCourses.Contains(c.Id.ToString()));
-                _ = courses;
                 var tutee = new Tutee
                 {
                     FirstName = tuteeViewModel.FirstName,
@@ -87,19 +94,16 @@ namespace MatchIt.Controllers
                     Courses = courses.ToList(),
                     Availabilities = availabilities
                 };
-                _ = tuteeViewModel;
-                _ = tutee;
                 _context.Add(tutee);
                 _context.SaveChanges();
-
+                TempData["SuccessMessage"] = "Tutee created successfully.";
                 return RedirectToAction(nameof(List));
 
             }
             catch( Exception ex)
             {
-                _ = ex.Message;
+                TempData["ErrorMessage"] = "Unable to create a new tutee.";
                 return RedirectToAction(nameof(List));
-
             }
         }
 
@@ -109,8 +113,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Tutees";
 			var tutee = _context.Tutees.Include(t => t.Availabilities).Include(t => t.Courses).SingleOrDefault(t => t.Id == id); // Eager Loading
             if (tutee == null)
+            {
+                TempData["ErrorMessage"] = "Invalid tutee id.";
                 return RedirectToAction(nameof(List));
-
+            }
 
             var vModel = new TuteeCreateViewModel
             {
@@ -179,29 +185,8 @@ namespace MatchIt.Controllers
             _context.Update(tutee);
             _context.SaveChanges();
 
+            TempData["SuccessMessage"] = "Tutee edited successfully.";
             return RedirectToAction(nameof(List));
-
-
-
-
-
-
-
-
-
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _context.Update(tutee);
-                    _context.SaveChanges();
-                }
-                return RedirectToAction(nameof(List));
-            }
-            catch
-            {
-                return RedirectToAction(nameof(List));
-            }
         }
 
         // GET: TuteeController/Delete/5
@@ -210,7 +195,10 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Tutees";
 			var tutee = _context.Tutees.SingleOrDefault(t => t.Id == id);
             if (tutee == null)
+            {
+                TempData["ErrorMessage"] = "Invalid tutee id.";
                 return RedirectToAction(nameof(List));
+            }
 
             return View(tutee);
         }
@@ -222,19 +210,27 @@ namespace MatchIt.Controllers
         {
             if (id != tutee.Id)
             {
+                TempData["ErrorMessage"] = "Invalid tutee Id.";
                 return RedirectToAction(nameof(List));
             }
 
             try
             {
-
-                _context.Remove(tutee);
+                var tut = _context.Tutees.Include(t => t.Semester).Single(t => t.Id == id);
+                var matchedList = _context.MatchingStudents
+                    .Include(m => m.Tutor)
+                    .Include(m => m.Tutee)
+                    .Include(m => m.Course)
+                    .Where(m => m.Tutee.Semester.Id == tut.Semester.Id);
+                _context.RemoveRange(matchedList);
+                _context.Remove(tut);
                 _context.SaveChanges();
-
+                TempData["SuccessMessage"] = "Tutee deleted successfully.";
                 return RedirectToAction(nameof(List));
             }
-            catch
+            catch (Exception ex)
             {
+                TempData["ErrorMessage"] = "Unable to delete tutee.";
                 return RedirectToAction(nameof(List));
             }
         }

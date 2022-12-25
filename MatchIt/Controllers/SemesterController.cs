@@ -73,7 +73,7 @@ namespace MatchIt.Controllers
 			var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
             if (semester == null)
             {
-                TempData["ErrorMessage"] = "Invalid semester Id.";
+                TempData["ErrorMessage"] = "Invalid semester id.";
                 return RedirectToAction(nameof(List));
             }
 
@@ -103,7 +103,7 @@ namespace MatchIt.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = ModelState.Values.ToList()[0].Errors[0].ToString();
+                    TempData["ErrorMessage"] = "Unable to edit semester.";
                     return RedirectToAction(nameof(Edit), new { id });
 
                 }
@@ -142,15 +142,21 @@ namespace MatchIt.Controllers
 
             try
             {
-
+                var matchedList = _context.MatchingStudents
+                    .Include(m => m.Tutor)
+                    .Include(m => m.Tutee)
+                    .Include(m => m.Course)
+                    .Where(m => m.Tutor.Semester.Id == semester.Id);
+               
+                _context.RemoveRange(matchedList);
                 _context.Remove(semester);
                 _context.SaveChanges();
                 TempData["SuccessMessage"] = "Semester deleted successfully.";
                 return RedirectToAction(nameof(List));
             }
-            catch
+            catch (Exception ex)
             {
-                TempData["SuccessMessage"] = "Unable to delete semester.";
+                TempData["ErrorMessage"] = "Unable to delete semester.";
                 return RedirectToAction(nameof(List));
             }
         }
@@ -167,7 +173,8 @@ namespace MatchIt.Controllers
             var matchedList = _context.MatchingStudents
                 .Include(m => m.Tutor)
                 .Include(m => m.Tutee)
-                .Include(m => m.Course);
+                .Include(m => m.Course)
+                .Where(m => m.Tutor.Semester.Id == semester.Id);
 
             return View(matchedList.ToList());
         }
@@ -315,16 +322,9 @@ namespace MatchIt.Controllers
                             TempData["ErrorMessage"] = "Unable to match students please check if the tutees and tutors data are correct.";
                             objTrans.Rollback();
                         }
-                        //finally
-                        //{
-                        //    con.Close();
-                        //}
                     }
-
-
                 }
-                // The following statement should never be true, But just in case this action was called without any tutors.
-                //This check just in case this case was executed without any tutors. (This should never )
+               
                 if (con.State == ConnectionState.Open)
                     con.Close();
 
@@ -332,96 +332,5 @@ namespace MatchIt.Controllers
               
             }
         }
-        //public ActionResult MatchStudents(int id)
-        //{
-        //    var semester = _context.Semesters.SingleOrDefault(sem => sem.Id == id);
-        //    if (semester == null)
-        //        return RedirectToAction(nameof(List));
-
-
-        //    //var tutorsAggr = _context.Tutors
-        //    //    .Include(t => t.Courses)
-        //    //    .Select(t => new {Id = t.Id, CourseCount = t.Courses.Count()})
-        //    //    .OrderBy(t => t.CourseCount);
-        //    var tutors = _context.Tutors.FromSqlRaw(@"
-        //        SELECT s.* FROM Students AS s
-        //        INNER JOIN CourseStudent AS cs ON cs.StudentsId = s.Id
-        //        WHERE s.StudentType = 'tutor'
-        //        GROUP BY 
-        //        s.Id, s.FirstName, s.LastName, 
-        //        s.StudentId, s.PhoneNumber, 
-        //        s.EmailAddress, s.SemesterId, s.StudentType, s.IsVolunteer
-        //        ORDER BY COUNT(*);
-        //    ").ToList();
-        //    //using (SqlConnection con = new SqlConnection(_context.Database.GetConnectionString())){
-
-        //    //}
-        //    //_context.Database.Connection
-        //foreach (var tutor in tutors)
-        //{
-        //    StringBuilder stringBuilder = new StringBuilder("");
-        //    for (int i = 0; i<tutor.Availabilities.Count; i++)
-        //    {
-        //        if (i == 0) 
-        //            stringBuilder.Append(" ( ");
-
-        //        stringBuilder.Append($" ((a.[From] BETWEEN '{tutor.Availabilities[i].From.ToString()}' AND '{tutor.Availabilities[i].To.ToString()}') OR (a.[To] BETWEEN '{tutor.Availabilities[0].From.ToString()}' AND '{tutor.Availabilities[0].To.ToString()}') AND (a.[Day] = '{tutor.Availabilities[0].Day}')) ");
-        //        if (i == tutor.Availabilities.Count - 1)
-        //        {
-        //            stringBuilder.Append(" ) ");
-        //        } 
-        //        else
-        //        {
-        //            stringBuilder.Append(" OR ");
-        //        }
-
-        //    }
-
-        ////var query = @$"
-        ////            SELECT TOP 2
-        ////             s.id AS StudentId,
-        ////                cs.CoursesId AS CourseId
-        ////            FROM 
-        ////             Students AS s
-        ////            INNER JOIN 
-        ////             CourseStudent AS cs ON cs.StudentsId = s.Id
-        ////            INNER JOIN 
-        ////             Availabilities AS a ON a.StudentId = s.Id
-        ////            WHERE
-        ////                    s.StudentType = 'tutee'
-        ////                AND
-        ////              s.SemesterId = {semester.Id}
-        ////             AND 
-        ////              cs.CoursesId IN (
-        ////               SELECT  cs.CoursesId FROM CourseStudent AS cs
-        ////               WHERE cs.StudentsId = {tutor.Id}
-        ////              )
-        ////             AND 
-        ////              {stringBuilder}
-        ////             AND 
-        ////              (
-        ////               CASE WHEN
-        ////                (SELECT COUNT (*) FROM MatchingStudents WHERE TuteeId = s.Id GROUP BY TuteeId) IS NULL
-        ////               THEN 0
-        ////               ELSE
-        ////                (SELECT COUNT (*) FROM MatchingStudents WHERE TuteeId = s.Id GROUP BY TuteeId)
-        ////               END
-        ////              ) < 2
-        ////            ORDER BY 
-        ////             (COUNT (*) OVER ( PARTITION BY s.Id))
-        ////        ";
-
-        //        var tutees = _context.Tutees.FromSqlRaw(query).Select(t => new TuteeMatchDTO() { StudentId = t["StudentId"], CourseId = t["CourseId"] });
-        //        //foreach (var tut in tutees)
-        //        //{
-        //        //    var matchingStudents = new MatchingStudents
-        //        //    {
-
-        //        //    };
-        //        //}
-        //    }
-
-        //    return RedirectToAction(nameof(List));
-        //}
     }
 }

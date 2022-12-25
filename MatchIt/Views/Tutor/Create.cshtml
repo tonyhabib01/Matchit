@@ -7,6 +7,14 @@
 
 }
 
+@if (!String.IsNullOrEmpty(TempData?["ErrorMessage"]?.ToString()))
+{
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		@TempData["ErrorMessage"]
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+
 <h1>Create</h1>
 
 <h4>Tutee</h4>
@@ -48,14 +56,14 @@
 	</div>
 	<div class="col-12">
 		<label class="form-label">Courses</label>
-		<select class="form-control courses-basic-multiple" asp-items="@Model.CoursesSelectList" asp-for="SelectedCourses">
+		<select class="form-control courses-basic-multiple" asp-items="@Model.CoursesSelectList" asp-for="SelectedCourses" required>
 			<option value="">-- Select Course --</option>
 		</select>
 	</div>
 	<div class="row g-3 mt-0">
 		<div class="col-md-4">
 			<label for="Availabilities[0].Day" class="form-label">Day</label>
-			<select class="form-control" name="Availabilities[0].Day">
+			<select class="form-control" name="Availabilities[0].Day" required>
 				<option value="Monday">Monday</option>
 				<option value="Tuesday">Tuesday</option>
 				<option value="Wednesday">Wednesday</option>
@@ -67,11 +75,11 @@
 		</div>
 		<div class="col-md-3">
 			<label for="Availabilities[0].From" class="form-label">From</label>
-			<input type="time" class="form-control" name="Availabilities[0].From" />
+			<input type="time" class="form-control" name="Availabilities[0].From" required/>
 		</div>
 		<div class="col-md-3">
 			<label for="Availabilities[0].To" class="form-label">To</label>
-			<input type="time" class="form-control" name="Availabilities[0].To" />
+			<input type="time" class="form-control" name="Availabilities[0].To" required/>
 		</div>
 	</div>
 	<div id="new-input" class="row g-3 mt-0">@Html.EditorFor(t => t.Availabilities)</div>
@@ -110,7 +118,7 @@
 					`	
 							<div class="col-md-4">
 											<label for="Availabilities[${count}].Day" class="form-label">Day</label>
-										<select class="form-control" name="Availabilities[${count}].Day">
+										<select class="form-control" name="Availabilities[${count}].Day" required>
 									<option value="Monday">Monday</option>
 									<option value="Tuesday">Tuesday</option>
 									<option value="Wednesday">Wednesday</option>
@@ -122,11 +130,11 @@
 							</div>
 							<div class="col-md-3">
 											<label for="Availabilities[${count}].From" class="form-label">From</label>
-										<input type="time" class="form-control" name="Availabilities[${count}].From" />
+										<input type="time" class="form-control" name="Availabilities[${count}].From" required />
 							</div>
 							<div class="col-md-3">
 											<label for="Availabilities[${count}].To" class="form-label">To</label>
-										<input type="time" class="form-control" name="Availabilities[${count}].To"/>
+										<input type="time" class="form-control" name="Availabilities[${count}].To" required/>
 							</div>
 					`;
 
