@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchIt.Controllers
 {
-	public class TestController : Controller
+    [Authorize]
+    public class TestController : Controller
 	{
 		// GET: TestController
 		public ActionResult Index()

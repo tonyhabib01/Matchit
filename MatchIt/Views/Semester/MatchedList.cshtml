@@ -20,7 +20,9 @@
 }
 
 <h1>Matched List</h1>
-
+<a asp-area="" asp-controller="Semester" asp-action="ExportList" asp-route-id="@Context.GetRouteData().Values["id"]">
+    Export
+</a>
 <table class="table table-striped">
     <thead>
         <tr>

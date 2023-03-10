@@ -1,6 +1,7 @@
 ﻿using MatchIt.Data;
 using MatchIt.Models;
 using MatchIt.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using System.Net.Mail;
 
 namespace MatchIt.Controllers
 {
+    [Authorize]
     public class TuteeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

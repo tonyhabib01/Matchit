@@ -1,10 +1,12 @@
 ﻿using MatchIt.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchIt.Controllers
 {
-	public class MatchingStudentsController : Controller
+    [Authorize]
+    public class MatchingStudentsController : Controller
 	{
 
         private readonly ILogger<HomeController> _logger;

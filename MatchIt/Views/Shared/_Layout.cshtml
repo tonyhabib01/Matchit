@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    string userId = ViewContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -41,6 +50,18 @@
                     <a asp-area="" asp-controller="Tutor" asp-action="List" class="nav-link text-white @((ViewBag?.Page == "Tutors") ? "active" : "")">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
                         Tutors
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Account" asp-action="ChangePassword" asp-route-userId="@userId" class="nav-link text-white">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                        Change Password
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link text-white">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                        Logout
                     </a>
                 </li>
             </ul>

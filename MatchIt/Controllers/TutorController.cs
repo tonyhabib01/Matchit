@@ -1,6 +1,7 @@
 ﻿using MatchIt.Data;
 using MatchIt.Models;
 using MatchIt.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Globalization;
 
 namespace MatchIt.Controllers
 {
+    [Authorize]
     public class TutorController : Controller
     {
         private readonly ILogger<HomeController> _logger;

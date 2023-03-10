@@ -1,9 +1,11 @@
 ﻿using MatchIt.Data;
 using MatchIt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchIt.Controllers
 {
+    [Authorize]
     public class CourseController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,7 +22,7 @@ namespace MatchIt.Controllers
 			ViewBag.Page = "Courses";
             try
             {
-                return View(_context.Courses);
+                return View(_context.Courses.OrderBy(c => c.Code));
             }
             catch
             {
@@ -44,6 +46,11 @@ namespace MatchIt.Controllers
             try
             {
                 course.Code = course.Code.Replace(" ", String.Empty);
+                var courseInDb = _context.Courses.SingleOrDefault(c => c.Code == course.Code);
+                if (courseInDb != null) {
+                    TempData["ErrorMessage"] = "Course already exist.";
+                    return RedirectToAction(nameof(Create));
+                }
                 _context.Add(course);
                 _context.SaveChanges();
                 TempData["SuccessMessage"] = "Course created successfully.";
