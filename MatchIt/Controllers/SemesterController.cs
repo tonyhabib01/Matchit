@@ -204,6 +204,7 @@ namespace MatchIt.Controllers
             using (SqlConnection con = new SqlConnection(_context.Database.GetConnectionString()))
             {
                 con.Open();
+                // select all tutors ordered by number of course count ascending. so we start with the tutor that has minimal number of courses.
                 var tutorsQuery = @$"
                     SELECT 
                         s.*
@@ -247,15 +248,15 @@ namespace MatchIt.Controllers
                             {
                                 // The following code is injection safe.
                                 //availabilitiesArrayQuery.Add($"((a.[From] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') OR (a.[To] BETWEEN '{sdr["From"]}' AND '{sdr["To"]}') AND (a.[Day] = '{sdr["To"]}'))");
-                                availabilitiesArrayQuery.Add($"((a.[From] <= '{sdr["From"]}' AND a.[To] > '{sdr["From"]}') AND (a.[Day] = '{sdr["Day"]}'))");
-                                availabilitiesArrayQuery.Add($"((a.[From] < '{sdr["To"]}' AND a.[To] >= '{sdr["To"]}') AND (a.[Day] = '{sdr["Day"]}'))");
+                                availabilitiesArrayQuery.Add($"((a.[From] <= '{sdr["From"]}' AND a.[To] > '{sdr["From"]}' AND DATEDIFF(minute, '{sdr["From"]}', a.[To]) >= 60) AND (a.[Day] = '{sdr["Day"]}'))");
+                                availabilitiesArrayQuery.Add($"((a.[From] < '{sdr["To"]}' AND a.[To] >= '{sdr["To"]}' AND DATEDIFF(minute, a.[From], '{sdr["To"]}') >= 60) AND (a.[Day] = '{sdr["Day"]}'))");
                                 availabilitiesArrayQuery.Add($"((a.[From] >= '{sdr["From"]}' AND a.[To] <= '{sdr["To"]}') AND (a.[Day] = '{sdr["Day"]}'))");
 
                             }
                         }
                     }
 
-
+                    // WHERE s.id 
                     var tuteeQuery = @$"
                         SELECT TOP 2
                          s.id AS StudentId,
@@ -280,6 +281,13 @@ namespace MatchIt.Controllers
                                 {string.Join(" OR ", availabilitiesArrayQuery.ToArray())}
                             )
                          AND 
+                          ( 
+                            SELECT COUNT (*) 
+                                FROM MatchingStudents 
+                                WHERE TuteeId = s.id 
+                                    AND CourseId = cs.CoursesId
+                          ) = 0
+                         AND
                           (
                            CASE WHEN
                             (SELECT COUNT (*) FROM MatchingStudents WHERE TuteeId = s.Id GROUP BY TuteeId) IS NULL
@@ -292,7 +300,7 @@ namespace MatchIt.Controllers
                         ORDER BY 
                          (COUNT (*) OVER ( PARTITION BY s.Id))
                     ";
-
+                    _ = tuteeQuery;
                     var matchedTutees = new List<TuteeMatchDTO>();
 
                     using (SqlCommand cmd = new SqlCommand(tuteeQuery))
